@@ -15,7 +15,7 @@ class Individual:
         self.fitness = fitness
         self.depth = depth
         self.line_len = line_len
-        self.decrease_prop = decrease_prop #pendiente de agregar a drawTree
+        self.decrease_prop = decrease_prop
         self.ram_number = ram_number #pendiente de agregar a drawTree
         self.ram_angle = ram_angle
         self.printTree()
@@ -24,7 +24,8 @@ class Individual:
         d_depth = random.randint(self.depth[0], self.depth[1])
         d_ram_angle = random.randint(self.ram_angle[0] , self.ram_angle[1])
         d_line_len = random.randint(self.line_len[0] , self.line_len[1])
-        drawTree(d_depth, d_ram_angle, d_line_len)
+        d_decrease_prop = random.randint(self.decrease_prop[0] , self.decrease_prop[1])
+        drawTree(d_depth, d_ram_angle, d_line_len, d_decrease_prop)
         #save_and_show()
 
     def get_percentage_in(self):
@@ -94,12 +95,14 @@ def simulation():
     depth = [5 , 14]
     ram_angle = [4 , 30]
     line_len = [1.0 , 2.0]
+    decrease_prop = [1, 9]
 
     d_depth = random.randint(depth[0], depth[1])
     d_ram_angle = random.randint(ram_angle[0] , ram_angle[1])
     d_line_len = random.randint(line_len[0] , line_len[1])
+    d_decrease_prop = random.randint(decrease_prop[0] , decrease_prop[1])
 
-    drawTree(d_depth, d_ram_angle, d_line_len)
+    drawTree(d_depth, d_ram_angle, d_line_len, d_decrease_prop)
     save_and_show(nombre)
     #fin de prueba-----------------------------------------------------------------------------
 
