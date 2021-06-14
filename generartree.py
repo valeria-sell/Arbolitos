@@ -2,6 +2,11 @@
 import pygame, math
 from pygame.locals import *
 
+pygame.init()
+window = pygame.display.set_mode((200, 200))
+pygame.display.set_caption("Fractal Tree")
+screen = pygame.display.get_surface()
+
 def drawTree(x1, y1, angle, depth, ram_angle, init_line_len): #Falta incluir ram_number
     import main
     NSCREEN = main.screen
