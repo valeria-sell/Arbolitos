@@ -3,11 +3,11 @@ import pygame, math
 from pygame.locals import *
 
 pygame.init()
-window = pygame.display.set_mode((800, 600))
+window = pygame.display.set_mode((200, 200))
 pygame.display.set_caption("Fractal Tree")
 screen = pygame.display.get_surface()
 
-def drawTree(x1, y1, angle, depth, ram_angle, init_line_len,nombre): #Falta incluir ram_number
+def drawTree(x1, y1, angle, depth, ram_angle, init_line_len): #Falta incluir ram_number
     #angle is upright (-90)
     #ram_angle es el angulo de las ramificaciones
     if depth > 0:
@@ -17,7 +17,6 @@ def drawTree(x1, y1, angle, depth, ram_angle, init_line_len,nombre): #Falta incl
         pygame.draw.line(screen, (255,255,255), (x1, y1), (x2, y2),2)
         drawTree(x2, y2, angle - ram_angle, depth - 1, ram_angle, init_line_len)
         drawTree(x2, y2, angle + ram_angle, depth - 1, ram_angle, init_line_len)
-    pygame.image.save(window, "palitos/"+nombre+".jpg")
 def input(event):
     if event.type == pygame.QUIT:
         exit(0)
@@ -25,7 +24,9 @@ def input(event):
 #drawtree recibe x, y, angulo de posicion y profundidad de ramas
 #!auxilio diferencia entre numero de ramificaciones y los niveles? 
 #!porque el numero de ramif puede ser random?
-drawTree(400, 550, -90, 10, 17, 10.0)
+nombre = "11"
+drawTree(100, 195, -90, 14, 7, 2.0)
+pygame.image.save(window, "palitos/"+nombre+".jpg")
 pygame.display.flip()
 while True:
     input(pygame.event.wait())
