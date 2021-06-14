@@ -11,10 +11,10 @@ Y1 = 195
 ANGLE = -90 
 
 class Individual:
-    def __init__(self, fitness, depth, init_line_len, decrease_prop, ram_number, ram_angle):
+    def __init__(self, fitness, depth, line_len, decrease_prop, ram_number, ram_angle):
         self.fitness = fitness
         self.depth = depth
-        self.init_line_len = init_line_len
+        self.line_len = line_len
         self.decrease_prop = decrease_prop #pendiente de agregar a drawTree
         self.ram_number = ram_number #pendiente de agregar a drawTree
         self.ram_angle = ram_angle
@@ -22,8 +22,8 @@ class Individual:
     def printTree(self):
         d_depth = random.randint(self.depth[0], self.depth[1])
         d_ram_angle = random.randint(self.ram_angle[0] , self.ram_angle[1])
-        d_init_line_len = random.randint(self.init_line_len[0] , self.init_line_len[1])
-        drawTree(X1, Y1, ANGLE, d_depth, d_ram_angle, d_init_line_len)
+        d_line_len = random.randint(self.line_len[0] , self.line_len[1])
+        drawTree(X1, Y1, ANGLE, d_depth, d_ram_angle, d_line_len)
 
     def get_percentage_in(self, SILHOUETTE):
         #buenas aqui encuentra porcentaje de pixeles del arb_ind que coinciden con silueta
@@ -46,7 +46,6 @@ class Individual:
 
     #Individual generation[]
     def selection(self): 
-
         best_fit = 0
         return best_fit 
 
@@ -87,13 +86,13 @@ def simulation(window, screen):
 
     depth = [5 , 14]
     ram_angle = [4 , 30]
-    init_line_len = [1.0 , 2.0]
+    line_len = [1.0 , 2.0]
 
     d_depth = random.randint(depth[0], depth[1])
     d_ram_angle = random.randint(ram_angle[0] , ram_angle[1])
-    d_init_line_len = random.randint(init_line_len[0] , init_line_len[1])
+    d_line_len = random.randint(line_len[0] , line_len[1])
 
-    drawTree(X1, Y1, ANGLE, d_depth, d_ram_angle, d_init_line_len)
+    drawTree(X1, Y1, ANGLE, d_depth, d_ram_angle, d_line_len)
     save_and_show(window, nombre)
     #fin de prueba-----------------------------------------------------------------------------
 
@@ -106,7 +105,7 @@ def simulation(window, screen):
 
         start = random.randint(0 , 9)
         end = random.randint(start , 10)
-        init_line_len = [start , end]
+        line_len = [start , end]
 
         start = random.randint(0 , 10)
         end = random.randint(start , 11)
@@ -119,7 +118,7 @@ def simulation(window, screen):
         start = random.randint(0 , 10)
         end = random.randint(start , 11)
         depth = [start , end]
-        tree = Individual(0, depth, init_line_len, decrease_prop, ram_number, ram_angle)
+        tree = Individual(0, depth, line_len, decrease_prop, ram_number, ram_angle)
         generation.append(tree)
         tree.printTree()
     print (generation)
