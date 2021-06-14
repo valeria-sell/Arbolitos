@@ -1,10 +1,11 @@
 import random
 import pygame, math
 from generartree import drawTree, save_and_show
+from operator import attrgetter
 
 SILHOUETTE = 0
-GEN_SIZE = 10
-TOURNAMENT_SIZE = 3 #SELECTION METHOD
+GEN_SIZE = 12
+TOURNAMENT_SIZE = 2 #SELECTION METHOD
 
 X1 = 100
 Y1 = 195
@@ -48,14 +49,6 @@ class Individual:
         fitness_value = ( percentage_in - percentage_out ) / 100
         self.fitness = fitness_value
 
-    #Individual generation[]
-    def selection(self, generation): 
-        ranking = []
-        for i in generation:
-            ranking.append(i)
-        best_fit = 0
-        return best_fit 
-
     #This method mutates the individual itself, generating new values of decrease prop, ram_number, ram_angle, depth
     def mutate(self): 
         mutation_value = random.random()
@@ -86,6 +79,40 @@ class Individual:
 
     #def do_generation():
 
+def selection(generation): 
+    #Sort individuals randomly in 2 groups 
+    groupA = []
+    groupB = []
+    finalists = []
+    best_parents = []
+
+    for i in generation:
+        rand_value = random.randint(0,1)
+        if (rand_value == 1):
+            if (len(groupA) < (len(generation)/TOURNAMENT_SIZE)):
+                groupA.append(i)
+            else:
+                groupB.append(i)
+        else:
+            if (len(groupB) < (len(generation)/TOURNAMENT_SIZE)):
+                groupB.append(i)
+            else:
+                groupA.append(i)
+            
+    #Find 2 best in both groups and add to finalists
+    groupA.sort(key=attrgetter('fitness'))
+    groupB.sort(key=attrgetter('fitness'))
+    for i in range(0, TOURNAMENT_SIZE):
+        finalists.append(groupA[i])
+        finalists.append(groupB[i])
+
+    #Select 2 best from finalists
+    finalists.sort(key=attrgetter('fitness'))
+    best_parents = finalists[:TOURNAMENT_SIZE]
+
+    #print(best_parents)
+    #Return best parents
+    return best_parents
 
 def simulation():
     #Prueba de arbolito ------------------------------------------------------------------------
@@ -125,13 +152,19 @@ def simulation():
         start = random.randint(0 , 10)
         end = random.randint(start , 11)
         depth = [start , end]
+
         tree = Individual(0, depth, line_len, decrease_prop, ram_number, ram_angle)
         generation.append(tree)
 
     print (generation)
 
+    # Asign proper fitness value
     for indiv in generation:
         indiv.calc_fitness()
+    
+    #Begin Selection Process
+    selection(generation)
+    
     
 
 
