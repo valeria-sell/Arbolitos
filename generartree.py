@@ -7,7 +7,7 @@ window = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Fractal Tree")
 screen = pygame.display.get_surface()
 
-def drawTree(x1, y1, angle, depth, ram_angle, init_line_len): #Falta incluir ram_number
+def drawTree(x1, y1, angle, depth, ram_angle, init_line_len,nombre): #Falta incluir ram_number
     #angle is upright (-90)
     #ram_angle es el angulo de las ramificaciones
     if depth > 0:
@@ -17,7 +17,7 @@ def drawTree(x1, y1, angle, depth, ram_angle, init_line_len): #Falta incluir ram
         pygame.draw.line(screen, (255,255,255), (x1, y1), (x2, y2),2)
         drawTree(x2, y2, angle - ram_angle, depth - 1, ram_angle, init_line_len)
         drawTree(x2, y2, angle + ram_angle, depth - 1, ram_angle, init_line_len)
-    pygame.image.save(window, "palitos/tree.jpg")
+    pygame.image.save(window, "palitos/"+nombre+".jpg")
 def input(event):
     if event.type == pygame.QUIT:
         exit(0)
