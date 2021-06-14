@@ -23,7 +23,7 @@ class Individual:
         d_depth = random.randint(self.depth[0], self.depth[1])
         d_ram_angle = random.randint(self.ram_angle[0] , self.ram_angle[1])
         d_line_len = random.randint(self.line_len[0] , self.line_len[1])
-        drawTree(X1, Y1, ANGLE, d_depth, d_ram_angle, d_line_len)
+        drawTree(d_depth, d_ram_angle, d_line_len)
 
     def get_percentage_in(self, SILHOUETTE):
         #buenas aqui encuentra porcentaje de pixeles del arb_ind que coinciden con silueta
@@ -92,7 +92,7 @@ def simulation(window, screen):
     d_ram_angle = random.randint(ram_angle[0] , ram_angle[1])
     d_line_len = random.randint(line_len[0] , line_len[1])
 
-    drawTree(X1, Y1, ANGLE, d_depth, d_ram_angle, d_line_len)
+    drawTree(d_depth, d_ram_angle, d_line_len)
     save_and_show(window, nombre)
     #fin de prueba-----------------------------------------------------------------------------
 
