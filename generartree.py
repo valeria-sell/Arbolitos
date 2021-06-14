@@ -10,7 +10,7 @@ screen = pygame.display.get_surface()
 def drawTree(x1, y1, angle, depth):
     #angle is upright (-90)
     #ram_angle es el angulo de las ramificaciones
-    ram_angle = 23
+    ram_angle = 17
     init_line_len = 10.0
     if depth > 0:
         #?Encontrar donde se define la proporcion de decremento de line en cada nivel
