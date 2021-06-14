@@ -31,5 +31,3 @@ def drawTreeAUX(x1, y1, angle, depth, ram_angle, line_len, prop_decr): #Falta in
 def save_and_show(nombre):
     pygame.image.save(window, "palitos/"+nombre+".jpg")
     pygame.display.flip()
-
-
