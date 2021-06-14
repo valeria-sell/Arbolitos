@@ -18,34 +18,41 @@ class Individual:
         self.decrease_prop = decrease_prop #pendiente de agregar a drawTree
         self.ram_number = ram_number #pendiente de agregar a drawTree
         self.ram_angle = ram_angle
+        self.printTree()
     
     def printTree(self):
         d_depth = random.randint(self.depth[0], self.depth[1])
         d_ram_angle = random.randint(self.ram_angle[0] , self.ram_angle[1])
         d_line_len = random.randint(self.line_len[0] , self.line_len[1])
         drawTree(d_depth, d_ram_angle, d_line_len)
+        #save_and_show()
 
-    def get_percentage_in(self, SILHOUETTE):
+    def get_percentage_in(self):
         #buenas aqui encuentra porcentaje de pixeles del arb_ind que coinciden con silueta
+        global SILHOUETTE
         value = 1
         return value
 
-    def get_percentage_out(self, SILHOUETTE):
+    def get_percentage_out(self):
         #buenas aqui encuentra porcentaje de pixeles del arb_ind que no coinciden con silueta
+        global SILHOUETTE
         value = 1
         return value
 
-    def calc_fitness(self, SILHOUETTE): #fitness function
+    def calc_fitness(self): #fitness function
         #! PENDIENTE, PENALIZAR EL TAMAÑO SI ES DEMASIADO PEQUEÑO, qué tan largo es el alcance? 
         # EXTREMOS, probar con eso para ver que tanto esta distribuido
-        percentage_in = 0 #get_percentage_in(SILHOUETTE)
-        percentage_out = 0 #get_percentage_out(SILHOUETTE)
+        percentage_in = self.get_percentage_in()
+        percentage_out = self.get_percentage_out()
 
         fitness_value = ( percentage_in - percentage_out ) / 100
         self.fitness = fitness_value
 
     #Individual generation[]
-    def selection(self): 
+    def selection(self, generation): 
+        ranking = []
+        for i in generation:
+            ranking.append(i)
         best_fit = 0
         return best_fit 
 
@@ -80,7 +87,7 @@ class Individual:
     #def do_generation():
 
 
-def simulation(window, screen):
+def simulation():
     #Prueba de arbolito ------------------------------------------------------------------------
     nombre = "11"
 
@@ -93,7 +100,7 @@ def simulation(window, screen):
     d_line_len = random.randint(line_len[0] , line_len[1])
 
     drawTree(d_depth, d_ram_angle, d_line_len)
-    save_and_show(window, nombre)
+    save_and_show(nombre)
     #fin de prueba-----------------------------------------------------------------------------
 
     # generate First Class
@@ -120,10 +127,11 @@ def simulation(window, screen):
         depth = [start , end]
         tree = Individual(0, depth, line_len, decrease_prop, ram_number, ram_angle)
         generation.append(tree)
+
     print (generation)
 
     for indiv in generation:
-        indiv.calc_fitness(SILHOUETTE)
+        indiv.calc_fitness()
     
 
 
