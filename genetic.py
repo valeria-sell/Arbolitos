@@ -17,7 +17,7 @@ class Individual:
         self.depth = depth
         self.line_len = line_len
         self.decrease_prop = decrease_prop
-        self.ram_number = ram_number #pendiente de agregar a drawTree
+        self.ram_number = ram_number 
         self.ram_angle = ram_angle
         self.printTree()
     
@@ -27,7 +27,7 @@ class Individual:
         d_line_len = random.randint(self.line_len[0] , self.line_len[1])
         d_decrease_prop = random.randint(self.decrease_prop[0] , self.decrease_prop[1])
         drawTree(d_depth, d_ram_angle, d_line_len, d_decrease_prop)
-        #save_and_show()
+        #save_and_show() estamos pendientes de la creacion del atributo nombre
 
     def get_percentage_in(self):
         #buenas aqui encuentra porcentaje de pixeles del arb_ind que coinciden con silueta
@@ -62,8 +62,8 @@ class Individual:
             end = random.randint(start , 5)
             self.init_line_len = [start , end]
         if (mutation_value > 0.4):
-            start = random.randint(0 , 10)
-            end = random.randint(start , 11)
+            start = random.randint(0 , 3)
+            end = random.randint(start , 4)
             self.ram_number = [start , end]
         if (mutation_value > 0.6):
             start = random.randint(0 , 30)
@@ -74,10 +74,26 @@ class Individual:
             end = random.randint(start , 11)
             self.depth = [start , end]
 
-    def crossover(self):
-        newInd = 0
-        return newInd
+    #only 1 new child per generation
+    def crossover(self, mother, father, generation):
+        depth = []
+        for i in range(2):
+            depth.insert(i, ((mother.depth[i] + father.depth[i]) / 2))
+        line_len = []
+        for i in range(2):
+            line_len.insert(i, ((mother.line_len[i] + father.line_len[i]) / 2))
+        decrease_prop = []
+        for i in range(2):
+            decrease_prop.insert(i, ((mother.decrease_prop[i] + father.decrease_prop[i]) / 2))
+        ram_number = [] 
+        for i in range(2):
+            ram_number.insert(i, ((mother.ram_number[i] + father.ram_number[i]) / 2))
+        ram_angle = []
+        for i in range(2):
+            ram_angle.insert(i, ((mother.ram_angle[i] + father.ram_angle[i]) / 2))
 
+        newInd = Individual(0, depth, line_len, decrease_prop, ram_number, ram_angle)
+        generation.append(newInd)
     #def do_generation():
 
 def selection(generation): 
@@ -144,8 +160,8 @@ def simulation():
         end = random.randint(start , 10)
         line_len = [start , end]
 
-        start = random.randint(0 , 10)
-        end = random.randint(start , 11)
+        start = random.randint(0 , 3)
+        end = random.randint(start , 4)
         ram_number = [start , end]
 
         start = random.randint(0 , 30)
