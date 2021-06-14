@@ -27,22 +27,22 @@ class Individual:
 
     def get_percentage_in(self, SILHOUETTE):
         #buenas aqui encuentra porcentaje de pixeles del arb_ind que coinciden con silueta
-        value = 0
+        value = 1
         return value
 
     def get_percentage_out(self, SILHOUETTE):
         #buenas aqui encuentra porcentaje de pixeles del arb_ind que no coinciden con silueta
-        value = 0
+        value = 1
         return value
 
     def calc_fitness(self, SILHOUETTE): #fitness function
         #! PENDIENTE, PENALIZAR EL TAMAÑO SI ES DEMASIADO PEQUEÑO, qué tan largo es el alcance? 
         # EXTREMOS, probar con eso para ver que tanto esta distribuido
-        percentage_in= get_percentage_in(self, SILHOUETTE)
-        percentage_out= get_percentage_out(self, SILHOUETTE)
+        percentage_in = 0 #get_percentage_in(SILHOUETTE)
+        percentage_out = 0 #get_percentage_out(SILHOUETTE)
 
         fitness_value = ( percentage_in - percentage_out ) / 100
-        return fitness_value
+        self.fitness = fitness_value
 
     #Individual generation[]
     def selection(self): 
@@ -120,8 +120,13 @@ def simulation(window, screen):
         depth = [start , end]
         tree = Individual(0, depth, line_len, decrease_prop, ram_number, ram_angle)
         generation.append(tree)
-        tree.printTree()
     print (generation)
+
+    for indiv in generation:
+        indiv.calc_fitness(SILHOUETTE)
+    
+
+
 
     
 
