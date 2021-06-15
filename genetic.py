@@ -38,6 +38,9 @@ class Individual:
     def set_id(self, name):
         self.id = name
 
+    def get_id(self):
+        return str(self.id)
+
     def get_percentage_in(self):
         #buenas aqui encuentra porcentaje de pixeles del arb_ind que coinciden con silueta
         global SILHOUETTE
