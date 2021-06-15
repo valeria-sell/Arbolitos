@@ -27,7 +27,7 @@ class Individual:
         d_ram_angle = random.randint(self.ram_angle[0] , self.ram_angle[1])
         d_line_len = random.randint(self.line_len[0] , self.line_len[1])
         d_decrease_prop_diam = random.randint(self.decrease_prop_diam[0] , self.decrease_prop_diam[1])
-        d_decrease_prop_long = random.randint(self.decrease_prop_long[0] , self.decrease_prop_long[1])
+        d_decrease_prop_long = random.uniform(self.decrease_prop_long[0] , self.decrease_prop_long[1])
         drawTree(d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam, d_decrease_prop_long)
         #save_and_show() estamos pendientes de la creacion del atributo nombre
 
@@ -147,7 +147,7 @@ def simulation():
     d_ram_angle = random.randint(ram_angle[0] , ram_angle[1])
     d_line_len = random.randint(line_len[0] , line_len[1])
     d_decrease_prop_diam = random.randint(decrease_prop_diam[0] , decrease_prop_diam[1])
-    d_decrease_prop_long = random.randrange(decrease_prop_long[0] , decrease_prop_long[1])
+    d_decrease_prop_long = random.uniform(decrease_prop_long[0] , decrease_prop_long[1])
 
     drawTree(d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam, d_decrease_prop_long)
     save_and_show(nombre)
