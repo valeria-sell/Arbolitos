@@ -12,23 +12,22 @@ Y1 = 195
 ANGLE = -90 
 
 class Individual:
-    def __init__(self, fitness, depth, line_len, decrease_prop_diam, decrease_prop_long, ram_number, ram_angle):
+    def __init__(self, fitness, depth, line_len, decrease_prop_diam, ram_number, ram_angle):
         self.fitness = fitness
         self.depth = depth
         self.line_len = line_len
         self.decrease_prop_diam = decrease_prop_diam
-        self.decrease_prop_long = decrease_prop_long
         self.ram_number = ram_number 
         self.ram_angle = ram_angle
         self.printTree()
     
     def printTree(self):
+        d_ram_number = self.ram_number
         d_depth = random.randint(self.depth[0], self.depth[1])
         d_ram_angle = random.randint(self.ram_angle[0] , self.ram_angle[1])
         d_line_len = random.randint(self.line_len[0] , self.line_len[1])
         d_decrease_prop_diam = random.randint(self.decrease_prop_diam[0] , self.decrease_prop_diam[1])
-        d_decrease_prop_long = random.uniform(self.decrease_prop_long[0] , self.decrease_prop_long[1])
-        drawTree(d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam, d_decrease_prop_long)
+        drawTree(d_ram_number, d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam)
         #save_and_show() estamos pendientes de la creacion del atributo nombre
 
     def get_percentage_in(self):
@@ -137,19 +136,18 @@ def simulation():
     #Prueba de arbolito ------------------------------------------------------------------------
     nombre = "11"
 
+    d_ram_number = [0,1,1,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3]
     depth = [5 , 14]
     ram_angle = [4 , 30]
     line_len = [1.0 , 4.0]
     decrease_prop_diam = [1, 9]
-    decrease_prop_long = [0.0, 2.0]
 
     d_depth = random.randint(depth[0], depth[1])
     d_ram_angle = random.randint(ram_angle[0] , ram_angle[1])
     d_line_len = random.randint(line_len[0] , line_len[1])
     d_decrease_prop_diam = random.randint(decrease_prop_diam[0] , decrease_prop_diam[1])
-    d_decrease_prop_long = random.uniform(decrease_prop_long[0] , decrease_prop_long[1])
 
-    drawTree(d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam, d_decrease_prop_long)
+    drawTree(d_ram_number, d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam)
     save_and_show(nombre)
     #fin de prueba-----------------------------------------------------------------------------
 
@@ -160,17 +158,13 @@ def simulation():
         end = random.randint(start , 51)
         decrease_prop = [start , end]
 
-        start = random.uniform(0.0 , 0.5)
-        end = random.uniform(start , 1.0)
-        decrease_prop_long = [start , end]
-
         start = random.randint(0 , 9)
         end = random.randint(start , 10)
         line_len = [start , end]
 
         start = random.randint(0 , 3)
         end = random.randint(start , 4)
-        ram_number = [start , end]
+        ram_number = [0,1,1,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3]
 
         start = random.randint(0 , 30)
         end = random.randint(start , 31)
@@ -180,7 +174,7 @@ def simulation():
         end = random.randint(start , 11)
         depth = [start , end]
 
-        tree = Individual(0, depth, line_len, decrease_prop, decrease_prop_diam, ram_number, ram_angle)
+        tree = Individual(0, depth, line_len, decrease_prop, ram_number, ram_angle)
         generation.append(tree)
 
     print (generation)
