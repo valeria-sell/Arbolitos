@@ -16,7 +16,8 @@ Y1 = 195
 ANGLE = -90 
 
 class Individual:
-    def __init__(self, fitness, depth, line_len, decrease_prop_diam, ram_number, ram_angle):
+    def __init__(self, identification, fitness, depth, line_len, decrease_prop_diam, ram_number, ram_angle):
+        self.id = identification
         self.fitness = fitness
         self.depth = depth
         self.line_len = line_len
@@ -33,6 +34,9 @@ class Individual:
         d_decrease_prop_diam = int(random.uniform(self.decrease_prop_diam[0] , self.decrease_prop_diam[1]))
         drawTree(d_ram_number, d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam)
         #save_and_show() estamos pendientes de la creacion del atributo nombre
+
+    def set_id(self, name):
+        self.id = name
 
     def get_percentage_in(self):
         #buenas aqui encuentra porcentaje de pixeles del arb_ind que coinciden con silueta
@@ -102,7 +106,7 @@ def crossover(mother, father):
     for i in range(0 , 2):
         ram_angle.insert(i, ((mother.ram_angle[i] + father.ram_angle[i]) / 2))
 
-    newInd = Individual(0, depth, line_len, decrease_prop_diam, ram_number, ram_angle)
+    newInd = Individual(0, 0, depth, line_len, decrease_prop_diam, ram_number, ram_angle)
     return newInd
 
 def selection(): 
@@ -192,9 +196,10 @@ def simulation():
         end = random.randint(start , 10)
         depth = [start , end]
 
-        tree = Individual(0, depth, line_len, decrease_prop_diam, ram_number, ram_angle)
+        tree = Individual(0, 0, depth, line_len, decrease_prop_diam, ram_number, ram_angle)
         GENERATION.append(tree)
         #drawTree(d_ram_number, d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam)
+        tree.set_id("1" + str(i))
         save_and_show("1",str(i))
 
     print (GENERATION[0])
@@ -210,6 +215,7 @@ def simulation():
     #Begin Selection Process, if more than one child is desired then loop next two lines
     parents = selection()
     newInd = crossover(parents[0], parents[1])
+    newInd.set_id(str(GEN_VERSION) + "1")
     save_and_show(str(GEN_VERSION), "1")
     newInd.calc_fitness()
     GENERATION.append(newInd)
@@ -222,11 +228,13 @@ def simulation():
         #Begin Selection Process, if more than one child is desired then loop next two lines
         parents = selection()
         newInd = crossover(parents[0], parents[1])
+        newInd.set_id(str(GEN_VERSION) + "1")
         save_and_show(str(GEN_VERSION), "1")
         newInd.calc_fitness()
         GENERATION.append(newInd)
         survivor_episode(1)
 
+        print(newInd.id)
         #!NO ESTA HABILITADO QUE MUTEN. HACER FUNCION AUX QUE MANEJE ESA CANTIDAD DE MUTACIONES RANDOM CADA VUELTA
 
     #and repeat
