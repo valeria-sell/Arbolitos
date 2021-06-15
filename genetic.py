@@ -1,5 +1,5 @@
 import random
-#import pygame, math
+import pygame, math
 from generartree import drawTree, save_and_show
 from operator import attrgetter
 
@@ -9,6 +9,7 @@ TOURNAMENT_SIZE = 2 #SELECTION METHOD
 GEN_HISTORY = []
 GEN_VERSION = 1
 GEN_LIMIT = 10
+GENERATION = []
 
 X1 = 100
 Y1 = 195
@@ -78,15 +79,15 @@ class Individual:
             end = random.randint(start , 11)
             self.depth = [start , end]
 
-def survivor_episode(generation, children):
+def survivor_episode(children):
     #! working here
-    generation.sort(key=attrgetter('fitness'))
-    children = children + (len(generation) - 1) -1
-    generation[:children]
+    GENERATION.sort(key=attrgetter('fitness'))
+    children = children + (len(GENERATION) - 1) -1
+    GENERATION[:children]
     return 0
 
-    #only 1 new child per generation
-def crossover(mother, father, generation):
+    #only 1 new child per GENERATION
+def crossover(mother, father):
     depth = []
     for i in range(0 , 2):
         depth.insert(i, ((mother.depth[i] + father.depth[i]) / 2))
@@ -102,25 +103,24 @@ def crossover(mother, father, generation):
         ram_angle.insert(i, ((mother.ram_angle[i] + father.ram_angle[i]) / 2))
 
     newInd = Individual(0, depth, line_len, decrease_prop_diam, ram_number, ram_angle)
-    newInd.calc_fitness()
-    generation.append(newInd)
+    return newInd
 
-def selection(generation): 
+def selection(): 
     #Sort individuals randomly in 2 groups 
     groupA = []
     groupB = []
     finalists = []
     best_parents = []
 
-    for i in generation:
+    for i in GENERATION:
         rand_value = random.randint(0,1)
         if (rand_value == 1):
-            if (len(groupA) < (len(generation)/TOURNAMENT_SIZE)):
+            if (len(groupA) < (len(GENERATION)/TOURNAMENT_SIZE)):
                 groupA.append(i)
             else:
                 groupB.append(i)
         else:
-            if (len(groupB) < (len(generation)/TOURNAMENT_SIZE)):
+            if (len(groupB) < (len(GENERATION)/TOURNAMENT_SIZE)):
                 groupB.append(i)
             else:
                 groupA.append(i)
@@ -160,9 +160,10 @@ def treeTest():
     #fin de prueba-----------------------------------------------------------------------------
 
 def simulation():
+    global GEN_VERSION
     treeTest()
     # generate First Class
-    generation = []
+    
     for i in range(GEN_SIZE):
         start = random.randint(0 , 9)
         end = random.randint(start , 10)
@@ -185,20 +186,43 @@ def simulation():
         depth = [start , end]
 
         tree = Individual(0, depth, line_len, decrease_prop_diam, ram_number, ram_angle)
-        generation.append(tree)
+        GENERATION.append(tree)
         #drawTree(d_ram_number, d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam)
         save_and_show("1",str(i))
 
-    print (generation[0])
+    print (GENERATION[0])
 
     # Asign proper fitness value
-    for indiv in generation:
+    for indiv in GENERATION:
         indiv.calc_fitness()
     
+    #Save copy of gen in history for later
+    GEN_HISTORY.append(GENERATION)
+    GEN_VERSION += 1
+
     #Begin Selection Process, if more than one child is desired then loop next two lines
-    parents = selection(generation)
-    crossover(parents[0], parents[1], generation)
-    survivor_episode(generation, 1)
+    parents = selection()
+    newInd = crossover(parents[0], parents[1])
+    save_and_show(str(GEN_VERSION), "1")
+    newInd.calc_fitness()
+    GENERATION.append(newInd)
+    survivor_episode(1)
+
+    while (GEN_VERSION < GEN_LIMIT):
+        GEN_HISTORY.append(GENERATION)
+        GEN_VERSION += 1
+            
+        #Begin Selection Process, if more than one child is desired then loop next two lines
+        parents = selection()
+        newInd = crossover(parents[0], parents[1])
+        save_and_show(str(GEN_VERSION), "1")
+        newInd.calc_fitness()
+        GENERATION.append(newInd)
+        survivor_episode(1)
+
+        #!NO ESTA HABILITADO QUE MUTEN. HACER FUNCION AUX QUE MANEJE ESA CANTIDAD DE MUTACIONES RANDOM CADA VUELTA
+
+    #and repeat
     
     
 
