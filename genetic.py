@@ -6,6 +6,9 @@ from operator import attrgetter
 SILHOUETTE = 0
 GEN_SIZE = 12
 TOURNAMENT_SIZE = 2 #SELECTION METHOD
+GEN_HISTORY = []
+GEN_VERSION = 1
+GEN_LIMIT = 10
 
 X1 = 100
 Y1 = 195
@@ -23,10 +26,10 @@ class Individual:
     
     def printTree(self):
         d_ram_number = self.ram_number
-        d_depth = random.randint(self.depth[0], self.depth[1])
-        d_ram_angle = random.randint(self.ram_angle[0] , self.ram_angle[1])
-        d_line_len = random.randint(self.line_len[0] , self.line_len[1])
-        d_decrease_prop_diam = random.randint(self.decrease_prop_diam[0] , self.decrease_prop_diam[1])
+        d_depth = int(random.uniform(self.depth[0], self.depth[1]))
+        d_ram_angle = int(random.uniform(self.ram_angle[0] , self.ram_angle[1]))
+        d_line_len = int(random.uniform(self.line_len[0] , self.line_len[1]))
+        d_decrease_prop_diam = int(random.uniform(self.decrease_prop_diam[0] , self.decrease_prop_diam[1]))
         drawTree(d_ram_number, d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam)
         #save_and_show() estamos pendientes de la creacion del atributo nombre
 
@@ -75,27 +78,32 @@ class Individual:
             end = random.randint(start , 11)
             self.depth = [start , end]
 
-    #only 1 new child per generation
-    def crossover(self, mother, father, generation):
-        depth = []
-        for i in range(2):
-            depth.insert(i, ((mother.depth[i] + father.depth[i]) / 2))
-        line_len = []
-        for i in range(2):
-            line_len.insert(i, ((mother.line_len[i] + father.line_len[i]) / 2))
-        decrease_prop = []
-        for i in range(2):
-            decrease_prop.insert(i, ((mother.decrease_prop[i] + father.decrease_prop[i]) / 2))
-        ram_number = [] 
-        for i in range(2):
-            ram_number.insert(i, ((mother.ram_number[i] + father.ram_number[i]) / 2))
-        ram_angle = []
-        for i in range(2):
-            ram_angle.insert(i, ((mother.ram_angle[i] + father.ram_angle[i]) / 2))
+def survivor_episode(generation, children):
+    #! working here
+    generation.sort(key=attrgetter('fitness'))
+    children = children + (len(generation) - 1) -1
+    generation[:children]
+    return 0
 
-        newInd = Individual(0, depth, line_len, decrease_prop, ram_number, ram_angle)
-        generation.append(newInd)
-    #def do_generation():
+    #only 1 new child per generation
+def crossover(mother, father, generation):
+    depth = []
+    for i in range(0 , 2):
+        depth.insert(i, ((mother.depth[i] + father.depth[i]) / 2))
+    line_len = []
+    for i in range(0 , 2):
+        line_len.insert(i, ((mother.line_len[i] + father.line_len[i]) / 2))
+    decrease_prop_diam = []
+    for i in range(0 , 2):
+        decrease_prop_diam.insert(i, ((mother.decrease_prop_diam[i] + father.decrease_prop_diam[i]) / 2))
+    ram_number = [0,1,1,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3]
+    ram_angle = []
+    for i in range(0 , 2):
+        ram_angle.insert(i, ((mother.ram_angle[i] + father.ram_angle[i]) / 2))
+
+    newInd = Individual(0, depth, line_len, decrease_prop_diam, ram_number, ram_angle)
+    newInd.calc_fitness()
+    generation.append(newInd)
 
 def selection(generation): 
     #Sort individuals randomly in 2 groups 
@@ -132,7 +140,7 @@ def selection(generation):
     #Return best parents
     return best_parents
 
-def simulation():
+def treeTest():
     #Prueba de arbolito ------------------------------------------------------------------------
     nombre = "11"
 
@@ -151,12 +159,14 @@ def simulation():
     #save_and_show(nombre)
     #fin de prueba-----------------------------------------------------------------------------
 
+def simulation():
+    treeTest()
     # generate First Class
-    generation = [[0*GEN_SIZE]]
+    generation = []
     for i in range(GEN_SIZE):
-        start = random.randint(0 , 50)
-        end = random.randint(start , 51)
-        decrease_prop = [start , end]
+        start = random.randint(0 , 9)
+        end = random.randint(start , 10)
+        decrease_prop_diam = [start , end]
 
         start = random.randint(0 , 9)
         end = random.randint(start , 10)
@@ -170,12 +180,12 @@ def simulation():
         end = random.randint(start , 31)
         ram_angle = [start , end]
 
-        start = random.randint(0 , 10)
-        end = random.randint(start , 11)
+        start = random.randint(0 , 9)
+        end = random.randint(start , 10)
         depth = [start , end]
 
-        tree = Individual(0, depth, line_len, decrease_prop, ram_number, ram_angle)
-        generation[0].append(tree)
+        tree = Individual(0, depth, line_len, decrease_prop_diam, ram_number, ram_angle)
+        generation.append(tree)
         #drawTree(d_ram_number, d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam)
         save_and_show("1",str(i))
 
@@ -185,8 +195,10 @@ def simulation():
     for indiv in generation:
         indiv.calc_fitness()
     
-    #Begin Selection Process
-    selection(generation)
+    #Begin Selection Process, if more than one child is desired then loop next two lines
+    parents = selection(generation)
+    crossover(parents[0], parents[1], generation)
+    survivor_episode(generation, 1)
     
     
 
