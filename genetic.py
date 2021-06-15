@@ -104,17 +104,23 @@ class Individual:
 
 def count_pixels(matrix):
     matrix_in = matrix[0]
+    matrix_in[-1] = 69
     matrix_out = matrix[1]
+    matrix_out[-1] = 69
     num_pixels_in = 0
     num_pixels_out = 0
-    for i in matrix[0]:
-        for j in i:
-            num_pixels_in = num_pixels_in + j.count(255)
-
-    for i in matrix[1]:
-        for j in i:
-            num_pixels_out = num_pixels_out + j.count(255)
-    return [num_pixels_in, num_pixels_out]
+    count = 0
+    for i in range(len(matrix_in)-1): #i es una natriz
+        for j in(matrix_in[i]):
+            count = count + j
+        if (count == 765):
+            num_pixels_in += 1 
+    count = 0
+    for i in range(len(matrix_out)-1): #i es una natriz
+        for j in(matrix_out[i]):
+            count = count + j
+        if (count == 765):
+            num_pixels_out += 1 
 
 def may_mutate(n):
     #Prob of mutation is MUTATION_PROB
@@ -273,7 +279,7 @@ def simulation():
         survivor_episode(1)
 
         print(newInd.id)
-        #!NO ESTA HABILITADO QUE MUTEN. HACER FUNCION AUX QUE MANEJE ESA CANTIDAD DE MUTACIONES RANDOM CADA VUELTA
+        
     GENERATION.sort(key=attrgetter('fitness'))
     print("Mejor Figura", GENERATION[0].id)
 
