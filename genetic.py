@@ -1,5 +1,5 @@
 import random
-import pygame, math
+#import pygame, math
 from generartree import drawTree, save_and_show
 from operator import attrgetter
 
