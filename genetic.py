@@ -1,5 +1,5 @@
-import random
-import pygame, math
+import random, cv2, os
+import numpy as np
 from generartree import drawTree, save_and_show
 from operator import attrgetter
 
@@ -139,6 +139,13 @@ def selection():
     #print(best_parents)
     #Return best parents
     return best_parents
+
+def comparation(generation):
+    os.chdir("palitos")
+    arbolito = cv2.imread("tree0.jpg")
+    for i in range(generation.len()):
+        return 0
+
 
 def treeTest():
     #Prueba de arbolito ------------------------------------------------------------------------
