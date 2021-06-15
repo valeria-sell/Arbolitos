@@ -10,6 +10,7 @@ GEN_HISTORY = []
 GEN_VERSION = 1
 GEN_LIMIT = 10
 GENERATION = []
+MUTATION_PROB = 2 #% OUT OF GEN SIZE
 
 X1 = 100
 Y1 = 195
@@ -74,25 +75,30 @@ class Individual:
     def mutate(self): 
         mutation_value = random.random()
         if (mutation_value > 0.0):
-            start = random.randint(0 , 50)
-            end = random.randint(start , 51)
-            self.decrease_prop = [start , end]
+            start = random.randint(0 , 9)
+            end = random.randint(start , 10)
+            self.decrease_prop_diam = [start , end]
         if (mutation_value > 0.2):
             start = random.randint(0 , 4)
             end = random.randint(start , 5)
             self.init_line_len = [start , end]
-        if (mutation_value > 0.4):
-            start = random.randint(0 , 3)
-            end = random.randint(start , 4)
-            self.ram_number = [start , end]
         if (mutation_value > 0.6):
             start = random.randint(0 , 30)
             end = random.randint(start , 31)
             self.ram_angle = [start , end]
         if (mutation_value > 0.8):
-            start = random.randint(0 , 10)
-            end = random.randint(start , 11)
+            start = random.randint(0 , 9)
+            end = random.randint(start , 10)
             self.depth = [start , end]
+
+def may_mutate(n):
+    #Prob of mutation is MUTATION_PROB
+    #Population/ total is GEN_SIZE
+    #Chances are 
+    chances = ((10-MUTATION_PROB)/100)*GEN_SIZE
+    if ((n/10) >= chances):
+        GENERATION[n].mutate
+        print ("Alguien mutó")
 
 def survivor_episode(children):
     GENERATION.sort(key=attrgetter('fitness'))
@@ -233,7 +239,11 @@ def simulation():
     while (GEN_VERSION < GEN_LIMIT):
         GEN_HISTORY.append(GENERATION)
         GEN_VERSION += 1
-            
+
+        #mutation step
+        n = random.randint(0,13)
+        may_mutate(n)
+
         #Begin Selection Process, if more than one child is desired then loop next two lines
         parents = selection()
         newInd = crossover(parents[0], parents[1])
