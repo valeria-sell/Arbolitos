@@ -91,6 +91,13 @@ class Individual:
             end = random.randint(start , 10)
             self.depth = [start , end]
 
+    def comparation(self,index):
+        arbolito = cv2.imread("palitos/tree0.jpg", 1)
+        fractal = cv2.imread("palitos/"+self.id+".jpg", 1)
+        resultIn = cv2.subtract(arbolito, fractal)
+        resultOut = cv2.subtract(arbolito, resultIn)
+        return [resultIn, resultOut]
+
 def may_mutate(n):
     #Prob of mutation is MUTATION_PROB
     #Population/ total is GEN_SIZE
@@ -159,15 +166,6 @@ def selection():
     #Return best parents
     return best_parents
 
-def comparation(index):
-    arbolito = cv2.imread("palitos/tree0.jpg", 1)
-    fractal = cv2.imread("palitos/"+GENERATION[index].get_id()+".jpg", 1)
-    result = cv2.subtract(arbolito, fractal)
-    imas = np.hstack((arbolito, fractal, result))
-    cv2.imshow("Arbolitos", imas)
-    return result
-
-
 def treeTest():
     #Prueba de arbolito ------------------------------------------------------------------------
     nombre = "11"
@@ -218,13 +216,13 @@ def simulation():
         #drawTree(d_ram_number, d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam)
         tree.set_id("1" + str(i))
         save_and_show("1",str(i))
-    print (comparation(0))
-
     #print (GENERATION[0])
 
     # Asign proper fitness value
     for indiv in GENERATION:
         indiv.calc_fitness()
+    
+    print(GENERATION[0].comparation(0))
     
     #Save copy of gen in history for later
     GEN_HISTORY.append(GENERATION)
