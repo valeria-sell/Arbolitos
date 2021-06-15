@@ -53,13 +53,17 @@ class Individual:
     def get_percentage_in(self):
         #buenas aqui encuentra porcentaje de pixeles del arb_ind que coinciden con silueta
         global SILHOUETTE
-        value = 1
+        value = 0
+        value = count_pixels(self.comparation()[1])
+        value = ((value)*100)/200*200
         return value
 
     def get_percentage_out(self):
         #buenas aqui encuentra porcentaje de pixeles del arb_ind que no coinciden con silueta
         global SILHOUETTE
-        value = 1
+        value = 0
+        value = count_pixels(self.comparation()[1])
+        value = ((value)*100)/200*200
         return value
 
     def calc_fitness(self): #fitness function
@@ -91,12 +95,26 @@ class Individual:
             end = random.randint(start , 10)
             self.depth = [start , end]
 
-    def comparation(self,index):
+    def comparation(self):
         arbolito = cv2.imread("palitos/tree0.jpg", 1)
         fractal = cv2.imread("palitos/"+self.id+".jpg", 1)
         resultIn = cv2.subtract(arbolito, fractal)
         resultOut = cv2.subtract(arbolito, resultIn)
         return [resultIn, resultOut]
+
+def count_pixels(matrix):
+    matrix_in = matrix[0]
+    matrix_out = matrix[1]
+    num_pixels_in = 0
+    num_pixels_out = 0
+    for i in matrix[0]:
+        for j in i:
+            num_pixels_in = num_pixels_in + j.count(255)
+
+    for i in matrix[1]:
+        for j in i:
+            num_pixels_out = num_pixels_out + j.count(255)
+    return [num_pixels_in, num_pixels_out]
 
 def may_mutate(n):
     #Prob of mutation is MUTATION_PROB
@@ -256,6 +274,8 @@ def simulation():
 
         print(newInd.id)
         #!NO ESTA HABILITADO QUE MUTEN. HACER FUNCION AUX QUE MANEJE ESA CANTIDAD DE MUTACIONES RANDOM CADA VUELTA
+    GENERATION.sort(key=attrgetter('fitness'))
+    print("Mejor Figura", GENERATION[0].id)
 
     #and repeat
     
