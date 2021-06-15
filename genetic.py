@@ -159,11 +159,13 @@ def selection():
     #Return best parents
     return best_parents
 
-def comparation(generation):
-    os.chdir("palitos")
-    arbolito = cv2.imread("tree0.jpg")
-    for i in range(generation.len()):
-        return 0
+def comparation(index):
+    arbolito = cv2.imread("palitos/tree0.jpg", 1)
+    fractal = cv2.imread("palitos/"+GENERATION[index].get_id()+".jpg", 1)
+    result = cv2.subtract(arbolito, fractal)
+    imas = np.hstack((arbolito, fractal, result))
+    cv2.imshow("Arbolitos", imas)
+    return result
 
 
 def treeTest():
@@ -216,8 +218,9 @@ def simulation():
         #drawTree(d_ram_number, d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam)
         tree.set_id("1" + str(i))
         save_and_show("1",str(i))
+    print (comparation(0))
 
-    print (GENERATION[0])
+    #print (GENERATION[0])
 
     # Asign proper fitness value
     for indiv in GENERATION:
