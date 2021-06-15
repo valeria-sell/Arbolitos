@@ -16,8 +16,9 @@ Y1 = 195
 ANGLE = -90 
 
 class Individual:
-    def __init__(self, identification, fitness, depth, line_len, decrease_prop_diam, ram_number, ram_angle):
+    def __init__(self, identification, checked_status, fitness, depth, line_len, decrease_prop_diam, ram_number, ram_angle):
         self.id = identification
+        self.checked_status = checked_status
         self.fitness = fitness
         self.depth = depth
         self.line_len = line_len
@@ -40,6 +41,13 @@ class Individual:
 
     def get_id(self):
         return str(self.id)
+
+    def get_status(self):
+        return self.checked_status
+
+    def change_status(self):
+        change = self.checked_status
+        self.checked_status = not change
 
     def get_percentage_in(self):
         #buenas aqui encuentra porcentaje de pixeles del arb_ind que coinciden con silueta
@@ -87,11 +95,9 @@ class Individual:
             self.depth = [start , end]
 
 def survivor_episode(children):
-    #! working here
     GENERATION.sort(key=attrgetter('fitness'))
     children = children + (len(GENERATION) - 1) -1
     GENERATION[:children]
-    return 0
 
     #only 1 new child per GENERATION
 def crossover(mother, father):
@@ -109,7 +115,7 @@ def crossover(mother, father):
     for i in range(0 , 2):
         ram_angle.insert(i, ((mother.ram_angle[i] + father.ram_angle[i]) / 2))
 
-    newInd = Individual(0, 0, depth, line_len, decrease_prop_diam, ram_number, ram_angle)
+    newInd = Individual(0, False, 0, depth, line_len, decrease_prop_diam, ram_number, ram_angle)
     return newInd
 
 def selection(): 
@@ -199,7 +205,7 @@ def simulation():
         end = random.randint(start , 10)
         depth = [start , end]
 
-        tree = Individual(0, 0, depth, line_len, decrease_prop_diam, ram_number, ram_angle)
+        tree = Individual(0, False, 0, depth, line_len, decrease_prop_diam, ram_number, ram_angle)
         GENERATION.append(tree)
         #drawTree(d_ram_number, d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam)
         tree.set_id("1" + str(i))
