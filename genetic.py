@@ -147,12 +147,12 @@ def simulation():
     d_line_len = random.randint(line_len[0] , line_len[1])
     d_decrease_prop_diam = random.randint(decrease_prop_diam[0] , decrease_prop_diam[1])
 
-    drawTree(d_ram_number, d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam)
-    save_and_show(nombre)
+    #drawTree(d_ram_number, d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam)
+    #save_and_show(nombre)
     #fin de prueba-----------------------------------------------------------------------------
 
     # generate First Class
-    generation = []
+    generation = [[0*GEN_SIZE]]
     for i in range(GEN_SIZE):
         start = random.randint(0 , 50)
         end = random.randint(start , 51)
@@ -175,9 +175,11 @@ def simulation():
         depth = [start , end]
 
         tree = Individual(0, depth, line_len, decrease_prop, ram_number, ram_angle)
-        generation.append(tree)
+        generation[0].append(tree)
+        #drawTree(d_ram_number, d_depth, d_ram_angle, d_line_len, d_decrease_prop_diam)
+        save_and_show("1",str(i))
 
-    print (generation)
+    print (generation[0])
 
     # Asign proper fitness value
     for indiv in generation:
